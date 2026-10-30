@@ -113,6 +113,17 @@ def move():
     writer.write(state['score'])
 
     clear()
+ def blinky(point):
+    options = [vector(5, 0), vector(-5, 0), vector(0, 5), vector(0, -5)]
+    best = None
+    best_dist = None
+    for option in options:
+        if valid(point + option):
+            dist = (pacman - (point + option))
+            if best_dist is None or dist < best_dist:
+                best_dist = dist
+                best = option
+    return best
 
     if valid(pacman + aim):
         pacman.move(aim)
@@ -131,12 +142,30 @@ def move():
     dot(20, 'yellow')
 
     for point, course in ghosts:
+        if valid(points + course):
+            options = [vector(5, 0), vector(-5, 0), vector(0, 5), vector(0, -5)]
+            best = None
+            best_dist = None 
+            for option in options:
+                if valid(point + option):
+                    dist = (pacman - (point + option)
+                            if best_dist is None or dist < best_dist:
+                        best_dist = dist
+                        best = option
+            course.x = best.x
+            course.y = best.y
+            point.move(course)
+        else:
+            best = blinky(point)
+            course.x = best.x
+            course.y = best.y
+            point.move(course)
+            
         up()
         goto(point.x + 10, point.y + 10)
         dot(20, 'red')
 
     update()
-
     for point, course in ghosts:
         if abs(pacman - point) < 20:
             return
