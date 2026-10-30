@@ -19,11 +19,12 @@ path = Turtle(visible=False)
 writer = Turtle(visible=False)
 aim = vector(5, 0)
 pacman = vector(-40, -80)
+# Los fantasmas avanzan 10 unidades; Pacman mantiene sus 5 unidades.
 ghosts = [
-    [vector(-180, 160), vector(5, 0)],
-    [vector(-180, -160), vector(0, 5)],
-    [vector(100, 160), vector(0, -5)],
-    [vector(100, -160), vector(-5, 0)],
+    [vector(-180, 160), vector(10, 0)],
+    [vector(-180, -160), vector(0, 10)],
+    [vector(100, 160), vector(0, -10)],
+    [vector(100, -160), vector(-10, 0)],
 ]
 # fmt: off
 tiles = [
@@ -50,6 +51,11 @@ tiles = [
 ]
 # fmt: on
 
+# Abre dos conexiones nuevas entre los pasillos del tablero.
+tiles[2 * 20 + 2] = 1
+tiles[2 * 20 + 3] = 1
+tiles[4 * 20 + 8] = 1
+tiles[5 * 20 + 8] = 1
 
 def square(x, y):
     """Draw square using path at (x, y)."""
@@ -111,7 +117,13 @@ def move():
     """Move pacman and all ghosts."""
     writer.undo()
     writer.write(state['score'])
-
+         
+    options = [
+                vector(10, 0),
+                vector(-10, 0),
+                vector(0, 10),
+                vector(0, -10),
+            ]
     clear()
  def blinky(point):
     options = [vector(5, 0), vector(-5, 0), vector(0, 5), vector(0, -5)]
